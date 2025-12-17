@@ -1,7 +1,7 @@
 
 export default function Home() {
   return (
-    <div className={'container'}>
+    <div className={"container"}>
       <LeftBar />
       <RightBar />
     </div>
@@ -21,6 +21,25 @@ function RightBar() {
   return (
     <div className={"right"}>
       <TopBar />
+      <TaskHolder />
+    </div>
+  )
+}
+
+function TaskHolder() {
+  return (
+    <div className="taskHolder">
+      <TaskSheet />
+      <TaskSheet />
+      <TaskSheet />
+    </div>
+  )
+}
+
+function TaskSheet() {
+  return (
+    <div className="task">
+
     </div>
   )
 }
