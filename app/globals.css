@@ -1,18 +1,10 @@
 @import "tailwindcss";
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  min-height: 100vh;
-}
-
 * {
   box-sizing: border-box;
 }
 
-.container {
+#container {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -23,6 +15,7 @@ body {
 .left {
   width: 300px;
   height: 100%;
+  gap: 20px;
   background-color: #17123A;
   color: white;
   display: flex;
@@ -44,6 +37,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 5px;
   padding-right: 25px;
   padding-left: 25px;
   background-image: linear-gradient(to bottom, rgba(41, 41, 41, 0.25), rgba(55, 55, 55, 0));
@@ -71,8 +65,25 @@ body {
   cursor: pointer;
 }
 
+.newBtn {
+  background-color: #E74C3C;
+  padding: 10px;
+  width: 100px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  transition: 0.5s;
+}
+.newBtn:hover {
+  background-color: #c73b2b;
+  transform: translateY(-2);
+  transition: 0.5s;
+  cursor: pointer;
+}
+
 .profilePic {
-  background-color: black;
+  background-image: url("../profile.jpg");
+  background-size: cover;
   width: 50px;
   height: 50px;
   border-radius: 100px;
@@ -97,9 +108,18 @@ body {
 
 .task {
   width: 300px;
-  height: 300px;
-  background-color: black;
+  height: 400px;
+  background-color: #d2dcda;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transition: 0.2s;
+  border-radius: 10px;
 }
+.task:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transition: 0.2s;
+}
+
+/* SEMANTIC */
 
 h1 {
   color: #F6E027;
@@ -108,4 +128,13 @@ h1 {
 h2 {
   color: #49B890;
   font-size: 20px;
+}
+
+li {
+  padding-left: 20px;
+  padding: 5px;
+}
+li:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
 }
