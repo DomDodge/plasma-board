@@ -1,3 +1,7 @@
+"use client";
+
+import RightBar from "./RightBar";
+
 // Temp Data
 // Users will need password field in DB
 const users = [
@@ -49,10 +53,6 @@ const task = [
   }
 ]
 
-// EVNIORNMENT VARIABLES
-let newBoard = false;
-let shareBoard = false;
-
 // PROGRAM START 
 export default function Home() {
   return (
@@ -71,17 +71,6 @@ function LeftBar() {
         <h2>BOARDS</h2>
       </div>
       <UserBoards />
-    </div>
-  )
-}
-
-function RightBar() {
-  return (
-    <div className={"right"}>
-      <TopBar />
-      <TaskHolder />
-      <NewBoard />
-      <ShareBoard />
     </div>
   )
 }
@@ -105,72 +94,4 @@ function UserBoards() {
       </ul>
     </div>
   )
-}
-
-function TaskHolder() {
-  return (
-    <div className="taskHolder">
-      <TaskSheet />
-      <TaskSheet />
-      <TaskSheet />
-    </div>
-  )
-}
-
-function TaskSheet() {
-  return (
-    <div className="task">
-
-    </div>
-  )
-}
-
-function TopBar() {
-  const toggleNew = () => {
-    newBoard = true;
-  };
-
-  const toggleShared = () => {
-    shareBoard = true;
-  };
-
-  return (
-    <div className={"topBar"}>
-      <div>
-        <button className={"shareBtn"}>SHARE</button>
-        <button className={"newBtn"}>NEW</button>
-      </div>
-
-      <div>
-        <h3>Domo</h3>
-        <div className={"profilePic"}></div>
-      </div>
-    </div>
-  )
-}
-
-function NewBoard() {
-  if (newBoard) {
-    return (
-      <form>
-        <h2>New Board</h2>
-        <label>Title</label>
-        <input type="text" max="30"></input>
-        <button type="submit" className={"shareBtn"}>CREATE</button>
-      </form>
-    )
-  }
-}
-
-function ShareBoard() {
-  if (shareBoard) {
-    return (
-      <form>
-        <h2>Share Board</h2>
-        <label>Invite Members</label>
-        <input type="text" max="30"></input>
-        <button type="submit" className={"shareBtn"}>CREATE</button>
-      </form>
-    )
-  }
 }
