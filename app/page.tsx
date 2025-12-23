@@ -1,3 +1,4 @@
+// Temp Data
 // Users will need password field in DB
 const users = [
   {
@@ -48,6 +49,11 @@ const task = [
   }
 ]
 
+// EVNIORNMENT VARIABLES
+let newBoard = false;
+let shareBoard = false;
+
+// PROGRAM START 
 export default function Home() {
   return (
     <div id={"container"}>
@@ -74,6 +80,8 @@ function RightBar() {
     <div className={"right"}>
       <TopBar />
       <TaskHolder />
+      <NewBoard />
+      <ShareBoard />
     </div>
   )
 }
@@ -118,6 +126,14 @@ function TaskSheet() {
 }
 
 function TopBar() {
+  const toggleNew = () => {
+    newBoard = true;
+  };
+
+  const toggleShared = () => {
+    shareBoard = true;
+  };
+
   return (
     <div className={"topBar"}>
       <div>
@@ -131,4 +147,30 @@ function TopBar() {
       </div>
     </div>
   )
+}
+
+function NewBoard() {
+  if (newBoard) {
+    return (
+      <form>
+        <h2>New Board</h2>
+        <label>Title</label>
+        <input type="text" max="30"></input>
+        <button type="submit" className={"shareBtn"}>CREATE</button>
+      </form>
+    )
+  }
+}
+
+function ShareBoard() {
+  if (shareBoard) {
+    return (
+      <form>
+        <h2>Share Board</h2>
+        <label>Invite Members</label>
+        <input type="text" max="30"></input>
+        <button type="submit" className={"shareBtn"}>CREATE</button>
+      </form>
+    )
+  }
 }
