@@ -9,7 +9,7 @@ import TaskHolder from "./TaskHolder";
 export default function RightBar() {
   const [newBoard, setNewBoard] = useState(false);
   const [shareBoard, setShareBoard] = useState(false);
-
+  
   return (
     <div className="right">
       <TopBar
