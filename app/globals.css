@@ -164,13 +164,23 @@
   backdrop-filter: blur(8px);
 }
 
+.accountImage {
+  width: 210px;
+  height: 210px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
 /* SEMANTIC */
 
 form {
   position: absolute;
   top: 100px;
   left: 40%;
-  width: 500px;
+  width: 600px;
   padding: 16px;
   height: auto;
   display: flex;
@@ -199,6 +209,7 @@ h1 {
 h2 {
   color: #49B890;
   font-size: 20px;
+  font-weight: bolder;
 }
 
 li {
