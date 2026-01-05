@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { validateUser, createUser, getSession } from "@/lib/actions";
+import { useState, useEffect } from "react";
+import { validateUser, createUser, getSession, uploadProfilePicture } from "@/lib/actions";
 import RightBar from "./RightBar";
+
+interface Session {
+  id: string;
+}
 
 // PROGRAM START 
 export default function Home() {
@@ -52,42 +56,79 @@ function Login() {
   const [signingUp, setSignUp] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
 
-  const session = getSession();
-  if(session != null) {
-    return;
+  useEffect(() => {
+    async function checkSession() {
+      try {
+        const currentSession = await getSession(); // ✅ Await the Promise
+        setSession(currentSession);
+      } catch (err) {
+        console.error("Session check failed:", err);
+      }
+    }
+    
+    checkSession();
+  }, []);
+
+  if (session?.id) {
+    return null;
   }
 
-  async function handleSignUp(formData: FormData) {
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const picture = "default";
+async function handleSignUp(formData: FormData) {
+  setLoading(true);
+  setError("");
 
-    const today = new Date();
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const password = formData.get("password");
+  const pictureFile = (formData.get("picture")) ? formData.get("picture") : null;
 
-    const formattedDate = new Intl.DateTimeFormat('en-US', {
-      month: '2-digit',
-      day: '2-digit',
-      year: 'numeric'
-    }).format(today);
+  const today = new Date();
+  const formattedDate = new Intl.DateTimeFormat('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric'
+  }).format(today);
 
-    const data = {
-      name : name,
-      email : email,
-      account_created: formattedDate,
-      picture: picture
+  let uploadResult = {
+    success: true,
+    filename: "default.jpg"
+  };
+
+  if(pictureFile != null) {
+    const uploadFormData = new FormData();
+    uploadFormData.append('picture', pictureFile);
+    
+    uploadResult = await uploadProfilePicture(uploadFormData);
+    
+    if (!uploadResult.success) {
+      setLoading(false);
+      return;
     }
-
-    const result = await createUser(data, password);
-
-    if (result.success) {
-      window.location.reload();
-    } else {
-      setError(result.error || "An unknown error has occured");
-    }
-    setLoading(false);
   }
+
+  // Step 2: Create user data with the secure filename
+  const userData = {
+    name: name,
+    email: email,
+    account_created: formattedDate,
+    picture: uploadResult.filename
+  };
+
+  // Step 3: Create user in database
+  const result = await createUser(userData, password);
+
+  if (result.success) {
+    alert(`Account created! Welcome, ${name}!`);
+    await validateUser(email, password);
+    window.location.reload();
+
+  } else {
+    setError(result.error || "An unknown error has occurred");
+  }
+  setLoading(false);
+}
 
   async function handleLogin(formData: FormData) {
     setLoading(true);
