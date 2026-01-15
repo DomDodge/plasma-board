@@ -1,67 +1,27 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { validateUser, createUser, getSession, uploadProfilePicture } from "@/lib/actions";
+import { validateUser, createUser, getSession, uploadProfilePicture, getAllProjects } from "@/lib/actions";
 import RightBar from "./RightBar";
 
 interface Session {
   id: string;
 }
 
+interface Project {
+  id: number;
+  title: string;
+  date_created: string;
+}
+
 // PROGRAM START 
 export default function Home() {
-  return (
-    <div id={"container"}>
-      <Login />
-      <LeftBar />
-      <RightBar />
-    </div>
-  )
-}
-
-function LeftBar() {
-  return (
-    <div className={"left"}>
-      <div className={"logo"}>
-        <h1>PLASMA</h1>
-        <h2>BOARDS</h2>
-      </div>
-      <UserBoards />
-    </div>
-  )
-}
-
-function UserBoards() {
-  return (
-    <div className={"userBoards"}>
-      <h2>Boards</h2>
-
-      <ul>
-        <li>Weekly Tasks</li>
-        <li>Monthly Goals</li>
-        <li>Habits</li>
-      </ul>
-      <h2>Shared Boards</h2>
-      
-      <ul>
-        <li>Throw Bro Update</li>
-        <li>FREDs Bits and Parts</li>
-        <li>Gnorbert</li>
-      </ul>
-    </div>
-  )
-}
-
-function Login() {
-  const [signingUp, setSignUp] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
     async function checkSession() {
       try {
-        const currentSession = await getSession(); // ✅ Await the Promise
+        const currentSession = await getSession();
         setSession(currentSession);
       } catch (err) {
         console.error("Session check failed:", err);
@@ -70,6 +30,63 @@ function Login() {
     
     checkSession();
   }, []);
+
+  return (
+    <div id={"container"}>
+      <Login session={session}/>
+      <LeftBar session={session}/>
+      <RightBar />
+    </div>
+  )
+}
+
+function LeftBar({ session }: { session: Session | null }) {
+  return (
+    <div className={"left"}>
+      <div className={"logo"}>
+        <h1>PLASMA</h1>
+        <h2>BOARDS</h2>
+      </div>
+      <UserBoards session={session}/>
+    </div>
+  )
+}
+
+function UserBoards({ session }: { session: Session | null }) {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    if (!session?.id) return;
+
+    async function getProjects() {
+      try {
+        const projects = await getAllProjects(Number(session?.id));
+        setProjects(projects);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    getProjects();
+  }, [session?.id]);
+
+  return (
+    <div className={"userBoards"}>
+      <h2>Boards</h2>
+
+      <ul>
+        {projects.map(p => (
+          <li key={p.id}>{p.title}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function Login({ session }: { session: Session | null }) {
+  const [signingUp, setSignUp] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   if (session?.id) {
     return null;
