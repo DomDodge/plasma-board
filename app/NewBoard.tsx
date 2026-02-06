@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react"
 import { createProject, getSession } from "@/lib/actions";
 
 type NewBoardProps = {
@@ -15,6 +14,7 @@ export default function NewBoard({ onClose }: NewBoardProps) {
 
     if(session != null) {
       createProject(session.id, title)
+      onClose();
     }
   }
 
