@@ -1,5 +1,6 @@
 "use server";
 
+import Link from 'next/link';
 import { getSession, getAllProjects } from "@/lib/actions";
 import RightBar from "./RightBar";
 import Login from "./Login";
@@ -17,10 +18,11 @@ interface Project {
 // PROGRAM START 
 export default async function Home() {
   const session = await getSession();
-  
   const projects = session?.id 
     ? await getAllProjects(Number(session.id)) 
     : [];
+
+  console.log(projects);
 
   return (
     <div id={"container"}>
@@ -55,11 +57,16 @@ function UserBoards({ session, projects }: LeftBarProps) {
       <h2>Boards</h2>
 
       {session?.id &&
-      <ul>
-        {projects.map(p => (
-          <li key={p.id}>{p.title}</li>
-        ))}
-      </ul>
+        <ul>
+          {projects.map((p) => (
+            <li key={p.id}>
+              {/* This adds ?projectId=1 to your URL */}
+              <Link href={`?projectId=${p.id}`}>
+                {p.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
       }
 
     </div>
