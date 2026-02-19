@@ -4,13 +4,14 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import TopBar from "./TopBar";
 import NewBoard from "./NewBoard";
+import BlurryBackground from "./BlurryBackground";
 import ShareBoard from "./ShareBoard";
 import TaskHolder from "./TaskHolder";
 import Account from "./Account";
 
 export default function RightBar() {
   const [newBoard, setNewBoard] = useState(false);
-  const [newTask, setNewTask] = useState(false);
+
   const [shareBoard, setShareBoard] = useState(false);
   const [accountInfo, setAccountInfo] = useState(false);
   const searchParams = useSearchParams();
@@ -27,7 +28,7 @@ export default function RightBar() {
       />
 
       {selectedProjectId ? (
-        <TaskHolder onClose={() => setNewTask(false)} projectId={selectedProjectId} />
+        <TaskHolder projectId={selectedProjectId} />
       ) : (
         <div className="empty-state">Please select a board from the left.</div>
       )}
@@ -42,6 +43,3 @@ export default function RightBar() {
   );
 }
 
-function BlurryBackground() {
-    return <div className={"blurryBackground"}></div>
-}

@@ -149,6 +149,7 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   transition: 0.2s;
   border-radius: 10px;
+  padding: 10px 15px;
 }
 .task:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
@@ -177,6 +178,8 @@
 
 .blurryBackground {
   position: absolute;
+  top: 0;
+  right: 0;
   width: 100vw;
   height: 100vh;
   z-index: 50;
@@ -192,6 +195,17 @@
 .column {
   display: flex;
   flex-direction: column;
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: none;
+  justify-content: space-between;
+  border-bottom: 3px solid black;
+}
+.headerRow h2 {
+  color: black;
 }
 
 /* SEMANTIC */
