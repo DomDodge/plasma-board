@@ -7,9 +7,10 @@ type TopBarProps = {
   onNew: () => void;
   onShare: () => void;
   onAccount: () => void;
+  projectId: string | null;
 };
 
-export default function TopBar({ onNew, onShare, onAccount }: TopBarProps) {
+export default function TopBar({ onNew, onShare, onAccount, projectId }: TopBarProps) {
   const [name, setName] = useState<string>("Loading...");
   const [image, setImage] = useState<string>("default.jpg");
   
@@ -32,7 +33,7 @@ export default function TopBar({ onNew, onShare, onAccount }: TopBarProps) {
   return (
     <div className="topBar">
       <div>
-        <button className="shareBtn" onClick={onShare}>SHARE</button>
+        {projectId && <button className="shareBtn" onClick={onShare}>SHARE</button>}
         <button className="newBtn" onClick={onNew}>NEW</button>
       </div>
 

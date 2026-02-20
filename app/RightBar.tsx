@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 import TopBar from "./TopBar";
 import NewBoard from "./NewBoard";
 import BlurryBackground from "./BlurryBackground";
@@ -9,28 +8,25 @@ import ShareBoard from "./ShareBoard";
 import TaskHolder from "./TaskHolder";
 import Account from "./Account";
 
-export default function RightBar() {
+export default function RightBar({ selectedProjectId }: {selectedProjectId: string}) {
   const [newBoard, setNewBoard] = useState(false);
 
   const [shareBoard, setShareBoard] = useState(false);
   const [accountInfo, setAccountInfo] = useState(false);
-  const searchParams = useSearchParams();
-  
-  // Get the 'projectId' from the URL (?projectId=123)
-  const selectedProjectId = searchParams.get("projectId");
-  
+
   return (
     <div className="right">
       <TopBar
         onNew={() => setNewBoard(true)}
         onShare={() => setShareBoard(true)}
         onAccount={() => setAccountInfo(true)}
+        projectId={selectedProjectId}
       />
 
       {selectedProjectId ? (
         <TaskHolder projectId={selectedProjectId} />
       ) : (
-        <div className="empty-state">Please select a board from the left.</div>
+        <div className="welcomeMessage">Welcome to Plasma Boards</div>
       )}
       
 

@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getProject, createBoard, getBoards } from "@/lib/actions";
+import { getProject, createBoard, getBoards, createTask, getTasks, updateTask } from "@/lib/actions";
 import BlurryBackground from "./BlurryBackground";
 
 interface Project {
@@ -73,11 +73,93 @@ interface TaskSheetProps {
   data: Board;
 }
 function TaskSheet({ data }: TaskSheetProps) {
+  const [tasks, setTasks] = useState<Task[] | null>(null);
+  const [creating, setCreating] = useState(false);
+  const [taskName, setTaskName] = useState("");
+
+  function newTask() {
+    setCreating(false);
+    createTask(data.id, taskName);
+    setTaskName("");
+  }
+
+  useEffect(() => {
+    async function load() {
+      const res = await getTasks(Number(data.id)) as { 
+        success: boolean; 
+        data: Task[]; 
+        error?: string 
+      };
+      
+      if (res.success) {
+        setTasks(res.data); 
+      } else {
+        setTasks([]);
+      }
+    }
+    load();
+  }, [data, creating]);
+
+
+  const getStatusColor = (dateInput: Date | string) => {
+    const now = new Date();
+    const dueDate = new Date(dateInput);
+    
+    now.setHours(0, 0, 0, 0);
+    dueDate.setHours(0, 0, 0, 0);
+
+    const diffInMs = dueDate.getTime() - now.getTime();
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+    if (diffInDays < 0) return "red";           
+    if (diffInDays <= 3) return "darkorange";
+    return "black";                            
+  };
+
+  const textColor = getStatusColor(data.due_date);
+
   return (
     <div className="task">
-      <div className="headerRow"> <h2>{data.title}</h2> <h2>02/27/2026</h2></div>
+      <div className="headerRow"> 
+        <h2 style={{ color: textColor }}>{data.title}</h2> 
+        <h2 style={{ color: textColor }}>
+          {new Date(data.due_date).toLocaleDateString()}
+        </h2>
+      </div>
+
+      <ul>
+        {tasks?.map((task) => (
+          <BulletPoint key={task.id} data={task} />
+        ))}
+      </ul>
+      
+      {!creating ? 
+      <div className="newTaskRow" onClick={() => setCreating(!creating)}>+</div>
+      :
+      <div className="newTaskRow">
+        <input value={taskName} onChange={(e) => setTaskName(e.target.value)} placeholder={"Task title here..."} type="text"/>
+        <button className="addBtn" onClick={newTask}>ADD</button>
+      </div>
+      }
+      
     </div>
   );
+}
+
+interface Task {
+  id: string;
+  board_id: string;
+  title: string;
+  status: string;
+}
+
+interface BulletProp {
+  data: Task;
+}
+function BulletPoint({ data }: BulletProp) {
+  return (
+    <li className="bulletPoint"><input type="checkbox" /> <h3>{data.title}</h3></li>
+  )
 }
 
 function NewTaskSheet({ onSet }: {onSet: () => void;}) {
