@@ -18,6 +18,7 @@ interface Project {
 export default function Home() {
   const [session, setSession] = useState<Session | null>(null);
   const [projects, setProjects] = useState<Project[] | []>([]);
+  const [newProject, setNewProject] = useState(false);
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +40,7 @@ export default function Home() {
       }
     }
     loadData();
-  }, []);
+  }, [newProject]);
 
   function swapProject(pid: number) {
     setSelectedProject(prev => (prev === pid ? null : pid));
@@ -51,7 +52,7 @@ export default function Home() {
     <div id={"container"}>
       <Login session={session}/>
       <LeftBar session={session} selectedProject={selectedProject} projects={projects} onProject={swapProject} />
-      <RightBar selectedProjectId={selectedProject ? selectedProject.toString() : ""}/>
+      <RightBar selectedProjectId={selectedProject ? selectedProject.toString() : ""} newProject={newProject} setNewProject={setNewProject }/>
     </div>
   )
 }

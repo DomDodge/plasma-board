@@ -8,16 +8,20 @@ import ShareBoard from "./ShareBoard";
 import TaskHolder from "./TaskHolder";
 import Account from "./Account";
 
-export default function RightBar({ selectedProjectId }: {selectedProjectId: string}) {
-  const [newBoard, setNewBoard] = useState(false);
+interface RightBarProps {
+  newProject: boolean;
+  setNewProject: (val: boolean) => void;
+  selectedProjectId: string;
+}
 
+export default function RightBar({ newProject, setNewProject, selectedProjectId }: RightBarProps) {
   const [shareBoard, setShareBoard] = useState(false);
   const [accountInfo, setAccountInfo] = useState(false);
 
   return (
     <div className="right">
       <TopBar
-        onNew={() => setNewBoard(true)}
+        onNew={() => setNewProject(true)}
         onShare={() => setShareBoard(true)}
         onAccount={() => setAccountInfo(true)}
         projectId={selectedProjectId}
@@ -30,9 +34,9 @@ export default function RightBar({ selectedProjectId }: {selectedProjectId: stri
       )}
       
 
-      {(newBoard || shareBoard || accountInfo) && <BlurryBackground /> }
+      {(newProject || shareBoard || accountInfo) && <BlurryBackground /> }
 
-      {newBoard && <NewBoard onClose={() => setNewBoard(false)} />}
+      {newProject && <NewBoard onClose={() => setNewProject(false)} />}
       {shareBoard && <ShareBoard onClose={() => setShareBoard(false)} projectId={selectedProjectId} />}
       {accountInfo && <Account onClose={() => setAccountInfo(false)} />}
     </div>

@@ -49,8 +49,9 @@ export default function TaskHolder({ projectId }: {projectId: string;}) {
       
       setLoading(false);
     }
+
     load();
-  }, [projectId]);
+  }, [projectId, newTask]);
 
   if (loading) return <div>Loading...</div>;
   if (!project) return <div>Project not found</div>;
@@ -157,8 +158,35 @@ interface BulletProp {
   data: Task;
 }
 function BulletPoint({ data }: BulletProp) {
+  const [status, setStatus] = useState(data.status)
+
+  async function setStat(val: string) {
+    setStatus(val);
+    updateTask(data.id, val);
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "incomplete": return "bg-orange-500 text-white";
+      case "in progress": return "bg-blue-500 text-white";
+      case "complete": return "bg-green-500 text-white";
+      default: return "bg-gray-100";
+    }
+  };
+
   return (
-    <li className="bulletPoint"><input type="checkbox" /> <h3>{data.title}</h3></li>
+    <li className="bulletPoint">
+      <select 
+        value={status} 
+        onChange={(e) => setStat(e.target.value)}
+        className={`${getStatusColor(status)}`}
+      >
+        <option className="orangeSelect" value="incomplete">Incomplete</option>
+        <option className="orangeSelect" value="in progress">In Progress</option>
+        <option className="orangeSelect" value="complete">Complete</option>
+      </select>
+      <h3 className={status === "complete" ? "line-through text-gray-400" : ""}>{data.title}</h3>
+    </li>
   )
 }
 
