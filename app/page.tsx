@@ -52,7 +52,12 @@ export default function Home() {
     <div id={"container"}>
       <Login session={session}/>
       <LeftBar session={session} selectedProject={selectedProject} projects={projects} onProject={swapProject} />
-      <RightBar selectedProjectId={selectedProject ? selectedProject.toString() : ""} newProject={newProject} setNewProject={setNewProject }/>
+      <RightBar 
+        selectedProjectId={selectedProject ? selectedProject.toString() : ""} 
+        newProject={newProject} 
+        setNewProject={setNewProject}
+        onNullProject={() => setSelectedProject(null)}
+      />
     </div>
   )
 }

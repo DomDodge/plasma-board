@@ -167,9 +167,9 @@ function BulletPoint({ data }: BulletProp) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "incomplete": return "bg-orange-500 text-white";
-      case "in progress": return "bg-blue-500 text-white";
-      case "complete": return "bg-green-500 text-white";
+      case "incomplete": return "orangeSelect text-white";
+      case "in progress": return "blueSelect text-white";
+      case "complete": return "greenSelect text-white";
       default: return "bg-gray-100";
     }
   };

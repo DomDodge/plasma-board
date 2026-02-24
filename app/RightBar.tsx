@@ -5,6 +5,7 @@ import TopBar from "./TopBar";
 import NewBoard from "./NewBoard";
 import BlurryBackground from "./BlurryBackground";
 import ShareBoard from "./ShareBoard";
+import EditBoard from "./EditBoard";
 import TaskHolder from "./TaskHolder";
 import Account from "./Account";
 
@@ -12,11 +13,13 @@ interface RightBarProps {
   newProject: boolean;
   setNewProject: (val: boolean) => void;
   selectedProjectId: string;
+  onNullProject: () => void;
 }
 
-export default function RightBar({ newProject, setNewProject, selectedProjectId }: RightBarProps) {
+export default function RightBar({ newProject, setNewProject, selectedProjectId, onNullProject }: RightBarProps) {
   const [shareBoard, setShareBoard] = useState(false);
   const [accountInfo, setAccountInfo] = useState(false);
+  const [editBoard, setEditBoard] = useState(false);
 
   return (
     <div className="right">
@@ -24,6 +27,7 @@ export default function RightBar({ newProject, setNewProject, selectedProjectId 
         onNew={() => setNewProject(true)}
         onShare={() => setShareBoard(true)}
         onAccount={() => setAccountInfo(true)}
+        onEdit={() => setEditBoard(true)}
         projectId={selectedProjectId}
       />
 
@@ -34,11 +38,12 @@ export default function RightBar({ newProject, setNewProject, selectedProjectId 
       )}
       
 
-      {(newProject || shareBoard || accountInfo) && <BlurryBackground /> }
+      {(newProject || shareBoard || accountInfo || editBoard) && <BlurryBackground /> }
 
       {newProject && <NewBoard onClose={() => setNewProject(false)} />}
       {shareBoard && <ShareBoard onClose={() => setShareBoard(false)} projectId={selectedProjectId} />}
       {accountInfo && <Account onClose={() => setAccountInfo(false)} />}
+      {editBoard && <EditBoard onClose={() => setEditBoard(false)} onNullProject={onNullProject} projectId={selectedProjectId} />}
     </div>
   );
 }
