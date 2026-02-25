@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { getSession, getAllProjects } from "@/lib/actions"; // Assuming these can be called from client
+import { getSession, getAllProjects } from "@/lib/actions";
 import RightBar from "./RightBar";
 import Login from "./Login";
 
@@ -40,7 +40,7 @@ export default function Home() {
       }
     }
     loadData();
-  }, [newProject]);
+  }, [newProject, selectedProject]);
 
   function swapProject(pid: number) {
     setSelectedProject(prev => (prev === pid ? null : pid));
@@ -57,6 +57,7 @@ export default function Home() {
         newProject={newProject} 
         setNewProject={setNewProject}
         onNullProject={() => setSelectedProject(null)}
+        userId={Number(session)}
       />
     </div>
   )

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getUserRole } from "@/lib/actions";
 import TopBar from "./TopBar";
 import NewBoard from "./NewBoard";
 import BlurryBackground from "./BlurryBackground";
@@ -14,12 +15,17 @@ interface RightBarProps {
   setNewProject: (val: boolean) => void;
   selectedProjectId: string;
   onNullProject: () => void;
+  userId: number;
 }
 
-export default function RightBar({ newProject, setNewProject, selectedProjectId, onNullProject }: RightBarProps) {
+export default function RightBar({ newProject, setNewProject, selectedProjectId, onNullProject, userId }: RightBarProps) {
   const [shareBoard, setShareBoard] = useState(false);
   const [accountInfo, setAccountInfo] = useState(false);
   const [editBoard, setEditBoard] = useState(false);
+
+  async function getRole() {
+    return await getUserRole(userId, selectedProjectId);
+  }
 
   return (
     <div className="right">
@@ -28,6 +34,7 @@ export default function RightBar({ newProject, setNewProject, selectedProjectId,
         onShare={() => setShareBoard(true)}
         onAccount={() => setAccountInfo(true)}
         onEdit={() => setEditBoard(true)}
+        userRole={getRole()}
         projectId={selectedProjectId}
       />
 
