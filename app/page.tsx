@@ -57,7 +57,8 @@ export default function Home() {
         newProject={newProject} 
         setNewProject={setNewProject}
         onNullProject={() => setSelectedProject(null)}
-        userId={Number(session)}
+        onLogOut={() => setSession(null)}
+        userId={Number(session?.id)}
       />
     </div>
   )

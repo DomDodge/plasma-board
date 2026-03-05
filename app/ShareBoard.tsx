@@ -19,7 +19,7 @@ export default function ShareBoard({ projectId, onClose }: ShareBoardProps) {
     }
     else {
       if(session != null) {
-        shareProject(id, projectId, "member")
+        shareProject(id, projectId, "pending")
         onClose();
       }
     }

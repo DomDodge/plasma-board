@@ -8,10 +8,11 @@ type TopBarProps = {
   onShare: () => void;
   onAccount: () => void;
   onEdit: () => void;
+  canEdit: boolean;
   projectId: string | null;
 };
 
-export default function TopBar({ onNew, onShare, onAccount, onEdit, projectId }: TopBarProps) {
+export default function TopBar({ onNew, onShare, onAccount, onEdit, canEdit, projectId }: TopBarProps) {
   const [name, setName] = useState<string>("Loading...");
   const [image, setImage] = useState<string>("default.jpg");
   
@@ -36,7 +37,7 @@ export default function TopBar({ onNew, onShare, onAccount, onEdit, projectId }:
       <div>
         {projectId && <button className="shareBtn" onClick={onShare}>SHARE</button>}
         <button className="newBtn" onClick={onNew}>NEW</button>
-        {projectId && <button onClick={onEdit}>
+        {projectId && canEdit && <button onClick={onEdit}>
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             fill="none" 
