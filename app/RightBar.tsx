@@ -30,10 +30,12 @@ export default function RightBar({ newProject, setNewProject, selectedProjectId,
   useEffect(() => {
     async function loadRole() {
       const role = await getUserRole(userId, selectedProjectId);
-      const proTitle = await getProjectName(selectedProjectId);
+      const result = await getProjectName(selectedProjectId);
       
-      if(proTitle != null && proTitle.title) {
-        setTitle(proTitle.title || '');
+      if (result && typeof result.title === 'string') {
+        setTitle(result.title);
+      } else {
+        setTitle("");
       }
       
       if(role === 'admin') {

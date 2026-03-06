@@ -13,7 +13,7 @@ export default function NewBoard({ onClose }: NewBoardProps) {
     const title = formData.get("title")
 
     if(session != null) {
-      createProject(session.id, title)
+      await createProject(session.id, title)
       onClose();
     }
   }

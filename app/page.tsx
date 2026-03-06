@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { getSession, getAllProjects } from "@/lib/actions";
+import { getSession, getAllProjects} from "@/lib/actions";
 import RightBar from "./RightBar";
 import Login from "./Login";
 

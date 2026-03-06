@@ -81,7 +81,6 @@ async function handleSignUp(formData: FormData) {
     const result = await validateUser(email, password);
 
     if (result.success) {
-      alert(`Welcome back, ${result.user.name}!`);
       window.location.reload();
     } else {
       setError(result.error || "An unknown error has occured");
